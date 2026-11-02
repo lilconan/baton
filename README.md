@@ -48,6 +48,24 @@ STEP 0은 입력을 FIXED/OPEN으로 나누고, 필수 기능마다 근거가 �
 검증되지 않은 결론이 많다는 뜻이므로, 와이어프레임을 그리기 전에 먼저
 `docs/{프로젝트}/`에 기획 문서를 남깁니다. → `PROCESS.md` §2, R9
 
+### 분기까지 담은 순서도
+
+사용자 확인에서 되돌아가는 길, 선택 단계, 산출물까지 모두 표준 순서도 기호로 그렸습니다. 그림을 누르면 원래 크기로 열립니다.
+
+<details>
+<summary>1쪽: 전체 흐름 (STEP 0~5)</summary>
+
+[![Baton 풀프로세스 전체 흐름 순서도](assets/baton-process-1.svg)](assets/baton-process-1.svg)
+
+</details>
+
+<details>
+<summary>2쪽: STEP 0 상세 (확인 A·B·C)</summary>
+
+[![Baton STEP 0 상세 순서도](assets/baton-process-2.svg)](assets/baton-process-2.svg)
+
+</details>
+
 ---
 
 ## 포함 파일
