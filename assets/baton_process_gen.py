@@ -288,3 +288,34 @@ svg2 = c.svg("baton-process-2", "Baton 풀프로세스 — STEP 0 상세",
              W, H2, leg)
 (OUT / "baton-process-2.html").write_text(page("baton-process-2", "Flowchart · 2/2", "Baton 풀프로세스 — STEP 0 상세", svg2, W), encoding="utf-8")
 print("written", H1, H2)
+
+# ════════════════ 심플 버전: README 폭 600px 한 장 ════════════════
+c = Canvas()
+SW, SCX, SLX = 600, 330, 150   # 폭, 가운데 줄, 왼쪽 되돌림 통로
+r = {"start": 50, "s0": 150, "s2": 260, "ok2": 370, "s3": 490, "ok3": 600, "s4": 720, "ok4": 830, "end": 940}
+c.path(f"M{SCX} {r['start'] + 24} V{r['s0'] - 30}")
+c.path(f"M{SCX} {r['s0'] + 28} V{r['s2'] - 30}")
+for s, ok, back, nx, fwd in [("s2", "ok2", "다시", "s3", "OK"), ("s3", "ok3", "수정", "s4", "A·B·C·전부"), ("s4", "ok4", "예", "end", "아니오")]:
+    c.path(f"M{SCX} {r[s] + 28} V{r[ok] - 46}")
+    c.path(f"M{SCX - 100} {r[ok]} H{SLX + 8} A8 8 0 0 1 {SLX} {r[ok] - 8} V{r[s] + 8} A8 8 0 0 1 {SLX + 8} {r[s]} H{SCX - 122}")
+    c.label(SLX + 10, (r[s] + r[ok]) / 2 + 4, back, "start")
+    gap_end = r[nx] - (26 if nx == "end" else 30)
+    c.path(f"M{SCX} {r[ok] + 44} V{gap_end}")
+    c.label(SCX + 8, r[ok] + 68, fwd, "start")
+c.terminal(SCX, r["start"], "기획 입력", "아이디어 한 줄 ~ 기획서")
+c.subroutine(SCX, r["s0"], "STEP 0 입력 게이트", "확인 A·B·C · 생략 불가", w=240, fill=FOCAL, sw=2)
+c.subroutine(SCX, r["s2"], "STEP 2 기획 해석", w=240)
+c.decision(SCX, r["ok2"], "해석 확인", w=200)
+c.subroutine(SCX, r["s3"], "STEP 3 화면 구조 3안", w=240)
+c.decision(SCX, r["ok3"], "안 선택", w=200)
+c.subroutine(SCX, r["s4"], "STEP 4 프로토타입 빌드", w=240)
+c.decision(SCX, r["ok4"], "수정할 것이 있나?", w=200)
+c.terminal(SCX, r["end"], "마감", "STEP 5")
+leg, last = legend([("terminal", "시작·끝"), ("subroutine", "단계"), ("decision", "사용자 확인"),
+                    ("focal", "건너뛸 수 없는 단계")], r["end"] + 80, SW)
+HS = last + 32
+svg_s = c.svg("baton-process-simple", "Baton 풀프로세스 — 심플",
+              "기획 입력에서 STEP 0 입력 게이트를 거쳐 STEP 2 해석, STEP 3 3안, STEP 4 프로토타입을 지나 마감까지 가며, 각 단계 뒤 사용자 확인에서 다시 하거나 수정하면 그 단계로 되돌아가는 흐름을 보여 준다.",
+              SW, HS, leg)
+(OUT / "baton-process-simple.html").write_text(page("baton-process-simple", "Flowchart · Simple", "Baton 풀프로세스 — 심플", svg_s, SW), encoding="utf-8")
+print("simple", HS)
