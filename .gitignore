@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# Playwright MCP 임시 산출물 (스냅샷·콘솔 로그·스크린샷)
+.playwright-mcp/
