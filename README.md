@@ -40,19 +40,9 @@ curl -fsSL $BASE/PROCESS.md -o PROCESS.md
 
 ## 워크플로우
 
-```
-입력 (아이디어 한 줄 ~ 완성된 기획서)
-  ↓
-STEP 0: docs/{프로젝트}/ 기획 문서       → 컨펌   ★생략 금지
-        (FIXED/OPEN 분해 + 필수기능 근거 추적)
-  ↓
-STEP 2: interpretation.html  (기획 해석 리포트)       → 컨펌
-  ↓
-STEP 3: screens-proposal.html (A/B/C 레이아웃 3안)    → 안 선택
-  ↓
-STEP 4: prototype.html        (A/B/C 탭 통합 프로토타입)
-        scenario-flow.html    (시나리오 기반 플로우 문서)
-```
+![Baton 워크플로우: 기획 입력 → STEP 0 입력 게이트 → STEP 2 기획 해석 → STEP 3 A/B/C 3안 설계 → STEP 4 프로토타입 빌드 → 마감](assets/baton-workflow.svg)
+
+STEP 0은 입력을 FIXED/OPEN으로 나누고, 필수 기능마다 근거가 있는지 추적합니다. STEP 4는 `prototype.html`(A/B/C 탭 통합 프로토타입)과 `scenario-flow.html`(시나리오 기반 플로우 문서)을 함께 만듭니다.
 
 **입력이 아무리 상세해도 STEP 0을 건너뛰지 않습니다.** 기획서가 자세하다는 것은
 검증되지 않은 결론이 많다는 뜻이므로, 와이어프레임을 그리기 전에 먼저

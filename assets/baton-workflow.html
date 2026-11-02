@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baton 워크플로우</title>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #ffffff;
+      --color-ink:     #1a1a1a;
+      --color-muted:   #555555;
+      --font-sans:     'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-sans);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; min-width: 1080px; display: block; }
+    @media print {
+      .diagram-container { overflow-x: visible; }
+      svg { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Diagram Design</p>
+    <h1>Baton 워크플로우</h1>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1080 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="baton-workflow-title baton-workflow-desc">
+        <title id="baton-workflow-title">Baton 워크플로우</title>
+        <desc id="baton-workflow-desc">기획 입력이 STEP 0 입력 게이트, STEP 2 기획 해석, STEP 3 A/B/C 3안 설계, STEP 4 프로토타입 빌드를 거쳐 마감되며, STEP 0과 STEP 2 뒤에는 사용자 컨펌, STEP 3 뒤에는 안 선택을 기다리고 STEP 4는 수정을 반복한다.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555555"/></marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a1a1a"/></marker>
+          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#333333"/></marker>
+        </defs>
+
+        <rect width="100%" height="100%" fill="#ffffff"/>
+
+        <!-- ── Arrows (drawn before nodes) ── -->
+        <line x1="128" y1="140" x2="182" y2="140" stroke="#555555" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="320" y1="140" x2="374" y2="140" stroke="#555555" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="512" y1="140" x2="566" y2="140" stroke="#555555" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="704" y1="140" x2="758" y2="140" stroke="#555555" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="896" y1="140" x2="950" y2="140" stroke="#555555" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- STEP 4 self-loop: revise -->
+        <path d="M804 104 V88 A8 8 0 0 1 812 80 H844 A8 8 0 0 1 852 88 V102" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+
+        <!-- ── Arrow labels (Korean register: 12px sans 500, 16px mask, 7px gap) ── -->
+        <rect x="332" y="117" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="348" y="129" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">컨펌</text>
+        <rect x="524" y="117" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="540" y="129" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">컨펌</text>
+        <rect x="706" y="117" width="52" height="16" rx="2" fill="#ffffff"/>
+        <text x="732" y="129" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">안 선택</text>
+        <rect x="812" y="57" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="828" y="69" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">수정</text>
+
+        <!-- ── Nodes ── -->
+        <!-- Start: input (oval) -->
+        <rect x="32" y="116" width="96" height="48" rx="20" fill="#ffffff"/>
+        <rect x="32" y="116" width="96" height="48" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="80" y="138" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 입력</text>
+        <text x="80" y="153" fill="#555555" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">idea · PRD</text>
+
+        <!-- STEP 0 (focal: never skipped) -->
+        <rect x="184" y="104" width="136" height="72" rx="6" fill="#ffffff"/>
+        <rect x="184" y="104" width="136" height="72" rx="6" fill="#ebebeb" stroke="#1a1a1a" stroke-width="1.2"/>
+        <rect x="192" y="110" width="36" height="12" rx="2" fill="none" stroke="#1a1a1a" stroke-width="0.8"/>
+        <text x="210" y="119" fill="#1a1a1a" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STEP 0</text>
+        <text x="252" y="146" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">입력 게이트</text>
+        <text x="252" y="162" fill="#555555" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">docs/{project}/</text>
+
+        <!-- STEP 2 -->
+        <rect x="376" y="104" width="136" height="72" rx="6" fill="#ffffff"/>
+        <rect x="376" y="104" width="136" height="72" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="384" y="110" width="36" height="12" rx="2" fill="none" stroke="#aaaaaa" stroke-width="0.8"/>
+        <text x="402" y="119" fill="#555555" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STEP 2</text>
+        <text x="444" y="146" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 해석</text>
+        <text x="444" y="162" fill="#555555" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">interpretation.html</text>
+
+        <!-- STEP 3 -->
+        <rect x="568" y="104" width="136" height="72" rx="6" fill="#ffffff"/>
+        <rect x="568" y="104" width="136" height="72" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="576" y="110" width="36" height="12" rx="2" fill="none" stroke="#aaaaaa" stroke-width="0.8"/>
+        <text x="594" y="119" fill="#555555" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STEP 3</text>
+        <text x="636" y="146" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">A/B/C 3안 설계</text>
+        <text x="636" y="162" fill="#555555" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">screens-proposal.html</text>
+
+        <!-- STEP 4 -->
+        <rect x="760" y="104" width="136" height="72" rx="6" fill="#ffffff"/>
+        <rect x="760" y="104" width="136" height="72" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <rect x="768" y="110" width="36" height="12" rx="2" fill="none" stroke="#aaaaaa" stroke-width="0.8"/>
+        <text x="786" y="119" fill="#555555" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STEP 4</text>
+        <text x="828" y="146" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">프로토타입 빌드</text>
+        <text x="828" y="162" fill="#555555" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">prototype.html</text>
+
+        <!-- End: STEP 5 (oval) -->
+        <rect x="952" y="116" width="96" height="48" rx="20" fill="#ffffff"/>
+        <rect x="952" y="116" width="96" height="48" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1000" y="138" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">마감</text>
+        <text x="1000" y="153" fill="#555555" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">STEP 5</text>
+
+        <!-- ── Legend strip ── -->
+        <line x1="32" y1="204" x2="1048" y2="204" stroke="#ebebeb" stroke-width="0.8"/>
+        <text x="32" y="236" fill="#555555" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+
+        <rect x="112" y="224" width="28" height="16" rx="8" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="148" y="236" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">시작과 끝</text>
+
+        <rect x="276" y="224" width="28" height="16" rx="3" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="312" y="236" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">단계</text>
+
+        <rect x="404" y="224" width="28" height="16" rx="3" fill="#ebebeb" stroke="#1a1a1a" stroke-width="1.2"/>
+        <text x="440" y="236" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">입력이 상세해도 건너뛰지 않는 단계</text>
+
+        <line x1="680" y1="232" x2="708" y2="232" stroke="#555555" stroke-width="1" stroke-dasharray="5,4"/>
+        <text x="716" y="236" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사용자 피드백으로 반복</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

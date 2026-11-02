@@ -33,7 +33,7 @@ PUBLISH=(
   "AGENTS.md" "BACKLOG.md" "CLAUDE.md" "CONTEXT.md"
   "PROCESS.md" "PROCESS_CHANGELOG.md" "README.md" "RUNBOOK.md" "START_HERE.md"
   "docs/_TEMPLATE" "docs/핵심-설계-규칙.md" "docs/한국어-카피-가드레일.md"
-  "install.sh" "publish.sh" "shell.html"
+  "assets" "install.sh" "publish.sh" "shell.html"
   "memory" "tools"
 )
 
