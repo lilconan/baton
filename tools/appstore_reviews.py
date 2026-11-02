@@ -43,7 +43,7 @@ def _get(url, retries=3):
             req = urllib.request.Request(url, headers=UA)
             with urllib.request.urlopen(req, timeout=25) as r:
                 return json.loads(r.read().decode("utf-8"))
-        except Exception as e:
+        except (OSError, ValueError) as e:  # 네트워크·HTTP 오류 / JSON·인코딩 오류
             if i == retries - 1:
                 return {"__error__": str(e)}
             time.sleep(1.5 * (i + 1))  # Apple 은 egress IP 단위로 강하게 스로틀한다
@@ -68,7 +68,7 @@ def app_name(app_id, country):
     d = _get(f"https://itunes.apple.com/lookup?id={app_id}&country={country}")
     try:
         return d["results"][0]["trackName"]
-    except Exception:
+    except (KeyError, IndexError, TypeError):
         return None
 
 
@@ -130,7 +130,7 @@ def render(app_id, country, pages, max_age_days, max_rating):
     def d(r):
         try:
             return datetime.date(*map(int, r["date"].split("-")))
-        except Exception:
+        except (ValueError, TypeError):
             return None
 
     low = [r for r in rows if r["rating"] <= max_rating]
@@ -184,8 +184,8 @@ def main():
     if a.cmd == "search":
         return search(a.term, a.country, a.limit)
 
-    chunks = [f"# P0 1차 VOC 수집 결과\n\n> 수집: `tools/appstore_reviews.py` · Apple 공개 리뷰 RSS\n"
-              f"> 기준: {a.max_rating}★ 이하 · 최근 {a.max_age_days//365}년 이내 · 열람 {TODAY.isoformat()}\n"]
+    chunks = [(f"# P0 1차 VOC 수집 결과\n\n> 수집: `tools/appstore_reviews.py` · Apple 공개 리뷰 RSS\n"
+               f"> 기준: {a.max_rating}★ 이하 · 최근 {a.max_age_days//365}년 이내 · 열람 {TODAY.isoformat()}\n")]
     tot = {"total": 0, "low": 0, "fresh": 0, "stale": 0}
     for aid in a.app_ids:
         md, st = render(aid, a.country, a.pages, a.max_age_days, a.max_rating)

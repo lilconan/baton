@@ -31,7 +31,7 @@ from pathlib import Path
 
 # 순서가 중요하다. 넓은 것(코드 블록)부터 잡아야 안쪽 패턴이 겹쳐 잡히지 않는다.
 PATTERNS = [
-    ("codeblock", re.compile(r"```.*?```", re.S)),
+    ("codeblock", re.compile(r"```.*?```", re.DOTALL)),
     ("code", re.compile(r"`[^`\n]+`")),
     ("linktarget", re.compile(r"\]\([^)\s]+\)")),
     ("url", re.compile(r"https?://[^\s)\]|>]+")),
