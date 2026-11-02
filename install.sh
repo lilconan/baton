@@ -2,7 +2,7 @@
 # Baton — Claude Code 에이전트·스킬 설치 스크립트
 #
 # 원격 설치:
-#   curl -fsSL https://raw.githubusercontent.com/moonbo-debug/baton/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/lilconan/baton/main/install.sh | bash
 #
 # 로컬 설치 (레포 clone 후):
 #   bash install.sh
@@ -15,7 +15,7 @@ AGENTS_DIR="$CLAUDE_DIR/agents"
 SKILLS_DIR="$CLAUDE_DIR/skills"
 
 # ── 소스 경로 (원격 or 로컬) ───────────────────────────
-REMOTE_BASE="https://raw.githubusercontent.com/moonbo-debug/baton/main"
+REMOTE_BASE="https://raw.githubusercontent.com/lilconan/baton/main"
 
 # 에이전트·스킬 원본 위치 (레포 루트 기준)
 SRC_AGENTS=".claude/agents"
@@ -63,6 +63,14 @@ SKILLS=("baton-tokens" "baton-shell")
 for name in "${SKILLS[@]}"; do
   echo "  → skills/$name.md"
   download "$SRC_SKILLS/$name.md" "$SKILLS_DIR/$name.md"
+done
+
+# 폴더형 스킬 (에이전트가 frontmatter skills:로 선적재한다)
+DIR_SKILLS=("korean-copy-guardrail")
+for name in "${DIR_SKILLS[@]}"; do
+  echo "  → skills/$name/SKILL.md"
+  mkdir -p "$SKILLS_DIR/$name"
+  download "$SRC_SKILLS/$name/SKILL.md" "$SKILLS_DIR/$name/SKILL.md"
 done
 
 echo ""

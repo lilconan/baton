@@ -40,7 +40,8 @@ PATTERNS = [
     ("id", re.compile(r"(?<![A-Za-z0-9-])[A-Z]{1,3}-\d{1,3}(?![0-9])")),
 ]
 PH = "⟦P{:03d}⟧"
-PH_RE = re.compile(r"⟦P(\d{3})⟧")
+# 보호 구간이 999개를 넘으면 번호가 4자리 이상이 되므로 자릿수를 고정하지 않는다
+PH_RE = re.compile(r"⟦P\d+⟧")
 
 
 def protected_spans(text):
@@ -80,7 +81,7 @@ def unmask(src, run_dir, out):
     text = Path(src).read_text(encoding="utf-8")
     table = json.loads((Path(run_dir) / "mask_table.json").read_text(encoding="utf-8"))
     seen = set(PH_RE.findall(text))
-    missing = [k for k in table if k[2:5] not in seen]
+    missing = [k for k in table if k not in seen]
     text = PH_RE.sub(lambda m: table.get(m.group(0), {"text": m.group(0)})["text"], text)
     Path(out).write_text(text, encoding="utf-8")
     print(f"복원: {out}")

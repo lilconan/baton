@@ -72,21 +72,41 @@ def app_name(app_id, country):
         return None
 
 
+PAGE_SIZE = 50
+EMPTY_RETRIES = 3
+
+
+def _entries(d):
+    e = d.get("feed", {}).get("entry", [])
+    return [e] if isinstance(e, dict) else e
+
+
 def pull_app(app_id, country, pages):
-    """10페이지 전량 수집. (rows, meta) 반환."""
+    """10페이지 전량 수집. (rows, meta) 반환.
+
+    2026-10-22부터 RSS가 간헐적으로 빈 피드를 준다. 같은 페이지를 다시 받으면 대체로 채워지므로
+    빈 페이지는 재시도하고, 그래도 비면 "데이터 끝"인지 "장애로 잘림"인지 구분해 meta에 남긴다.
+    """
     rows, name, err = [], app_name(app_id, country), None
+    prev_count = PAGE_SIZE
     for p in range(1, pages + 1):
-        d = _get(f"https://itunes.apple.com/{country}/rss/customerreviews/"
-                 f"page={p}/id={app_id}/sortby=mostrecent/json")
+        url = (f"https://itunes.apple.com/{country}/rss/customerreviews/"
+               f"page={p}/id={app_id}/sortby=mostrecent/json")
+        for attempt in range(EMPTY_RETRIES):
+            d = _get(url)
+            if "__error__" in d or _entries(d):
+                break
+            time.sleep(2 * (attempt + 1))
         if "__error__" in d:
-            err = d["__error__"]
+            err = f"{p}페이지 요청 실패: {d['__error__']}"
             break
-        feed = d.get("feed", {})
-        e = feed.get("entry", [])
-        if isinstance(e, dict):
-            e = [e]
+        e = _entries(d)
         if not e:
+            # 앞 페이지가 꽉 찼는데 비었다면 데이터 끝이 아니라 빈 피드 장애로 본다
+            if prev_count >= PAGE_SIZE:
+                err = f"{p}페이지가 재시도 {EMPTY_RETRIES}회 뒤에도 빈 피드"
             break
+        prev_count = len(e)
         for x in e:
             rows.append({
                 "rating": int(x["im:rating"]["label"]),
@@ -124,6 +144,8 @@ def render(app_id, country, pages, max_age_days, max_rating):
            f"- 수집 {len(rows)}건 (RSS 최대 {pages}페이지)",
            f"- 저평점 1~{max_rating}★ **{len(low)}건**  ·  그중 {max_age_days//365}년 이내 **{len(fresh)}건** (↓시점 강등 대상 {len(stale)}건)",
            "- 연도 분포: " + " · ".join(f"{y} {c}" for y, c in sorted(years.items()) if y),
+           *([f"- ⚠ 수집이 중간에 끊김: {meta['error']}. 위 수치는 일부 표본이다 (§4-3 ↓편향에 기록)"]
+             if meta["error"] else []),
            f"- 열람 {TODAY.isoformat()}\n",
            "| # | 인용 원문 | 별점 | 작성일 | 버전 | 등급 |",
            "|---|---|---|---|---|---|"]

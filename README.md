@@ -9,17 +9,19 @@
 ### 원격 설치 (GitHub에서 직접)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/moonbo-debug/baton/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/lilconan/baton/main/install.sh | bash
 ```
 
 ### 로컬 설치 (레포 clone 후)
 
 ```bash
-git clone https://github.com/moonbo-debug/baton.git
+git clone https://github.com/lilconan/baton.git
 bash baton/install.sh
 ```
 
 설치 위치: `~/.claude/agents/` + `~/.claude/skills/`
+
+한국어 문체 린터 `hanlint`는 선택 사항입니다. 설치되어 있으면 이 레포의 훅(`.claude/settings.json`)이 문서 저장과 답변마다 번역투를 검사하고, 없으면 훅이 아무것도 하지 않습니다.
 
 ---
 
@@ -29,7 +31,7 @@ bash baton/install.sh
 `PROCESS.md`는 STEP 0 입력 게이트가 참조하는 필수 파일이므로 함께 복사해야 합니다.
 
 ```bash
-BASE=https://raw.githubusercontent.com/moonbo-debug/baton/main
+BASE=https://raw.githubusercontent.com/lilconan/baton/main
 curl -fsSL $BASE/CLAUDE.md  -o CLAUDE.md
 curl -fsSL $BASE/PROCESS.md -o PROCESS.md
 ```
@@ -68,6 +70,7 @@ STEP 4: prototype.html        (A/B/C 탭 통합 프로토타입)
 | `.claude/agents/baton-builder.md` | STEP 4: 프로토타입 빌드 |
 | `.claude/skills/baton-tokens.md` | 모노크롬 팔레트·컴포넌트 정의 |
 | `.claude/skills/baton-shell.md` | createMobileApp + 플로우뷰 JS |
+| `.claude/skills/korean-copy-guardrail/` | 한국어 카피 규칙 (빌더·해석·설계 에이전트가 선적재) |
 | `CLAUDE.md` | 프로젝트 규칙 (설치 시 템플릿으로 복사) |
 | `PROCESS.md` | 기획 프로세스 표준 — 더블 다이아몬드, 출처 등급, FIXED 처리 (**STEP 0 필수 참조**) |
 | `RUNBOOK.md` | 단계별 프롬프트 모음 (사람이 읽는 것) |

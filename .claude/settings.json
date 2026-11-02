@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "PATH=\"$HOME/.local/bin:$PATH\" hanlint hook"
+            "command": "PATH=\"$HOME/.local/bin:$PATH\"; command -v hanlint >/dev/null 2>&1 || exit 0; hanlint hook"
           },
           {
             "type": "command",
@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "PATH=\"$HOME/.local/bin:$PATH\" hanlint hook --reply"
+            "command": "PATH=\"$HOME/.local/bin:$PATH\"; command -v hanlint >/dev/null 2>&1 || exit 0; hanlint hook --reply"
           }
         ]
       }

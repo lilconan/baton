@@ -7,23 +7,35 @@
 #
 # 동작:
 #   작업 레포(비공개)에는 뼈대와 프로젝트 산출물이 함께 있다.
-#   HEAD 트리에서 산출물(output/, docs/ 아래 프로젝트 폴더)을 뺀 트리를
-#   임시 인덱스로 만들고, 공개 레포 main 위에 커밋 하나로 얹어 push 한다.
+#   HEAD 트리에서 PUBLISH 목록에 적힌 경로만 골라 임시 인덱스로 트리를 만들고,
+#   공개 레포 main 위에 커밋 하나로 얹어 push 한다.
+#
+# 왜 허용 목록인가:
+#   "뺄 목록" 방식은 산출물이 예상 밖 위치에 생기면 그대로 공개된다.
+#   허용 목록은 새 뼈대 파일을 빠뜨릴 수는 있어도 산출물을 내보내지는 않는다.
+#   빠진 뼈대 후보는 발행할 때마다 아래에 따로 알려 준다.
 #
 # 왜 부모를 공개 레포 HEAD 하나만 두는가:
 #   작업 레포 커밋을 부모로 넣으면 그 히스토리(산출물 포함)가 통째로
 #   공개 레포에 딸려 간다. 공개 레포에는 발행 스냅샷만 쌓는다.
 
-set -e
+set -eo pipefail
 
 PUBLIC_URL="https://github.com/lilconan/baton.git"
 REMOTE_NAME="public"
 BRANCH="main"
 
-# docs/ 아래에서 공개하는 폴더 (나머지 폴더는 프로젝트 산출물로 보고 뺀다)
-DOCS_KEEP="_TEMPLATE"
-# 통째로 빼는 경로
-EXCLUDE=("output")
+# 공개하는 경로 (폴더는 하위 전체). 새 뼈대 파일을 만들면 여기에 추가한다.
+PUBLISH=(
+  ".claude/agents" ".claude/skills" ".claude/hooks" ".claude/settings.json"
+  ".codex"
+  ".gitignore" ".hanlint-baseline.json" "hanlint.toml"
+  "AGENTS.md" "BACKLOG.md" "CLAUDE.md" "CONTEXT.md"
+  "PROCESS.md" "PROCESS_CHANGELOG.md" "README.md" "RUNBOOK.md" "START_HERE.md"
+  "docs/_TEMPLATE" "docs/핵심-설계-규칙.md" "docs/한국어-카피-가드레일.md"
+  "install.sh" "publish.sh" "shell.html"
+  "memory" "tools"
+)
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
@@ -38,17 +50,8 @@ fi
 TMP_INDEX="$(mktemp)"
 trap 'rm -f "$TMP_INDEX"' EXIT
 export GIT_INDEX_FILE="$TMP_INDEX"
-git read-tree HEAD
-
-for p in "${EXCLUDE[@]}"; do
-  git rm -r --cached -q --ignore-unmatch -- "$p"
-done
-
-# docs/ 바로 아래 폴더 중 DOCS_KEEP 이외는 전부 뺀다 (docs/*.md 파일은 유지)
-git -c core.quotePath=false ls-files -- docs | awk -F/ 'NF>2 {print $2}' | sort -u | while read -r d; do
-  [ "$d" = "$DOCS_KEEP" ] && continue
-  git rm -r --cached -q -- "docs/$d"
-done
+git read-tree --empty
+git ls-tree -r -z HEAD -- "${PUBLISH[@]}" | git update-index -z --index-info
 
 # hanlint 기준선에는 산출물 문장이 인용돼 있으므로 공개 트리에 남은 파일 항목만 남긴다
 if git ls-files --error-unmatch .hanlint-baseline.json >/dev/null 2>&1; then
@@ -65,6 +68,16 @@ sys.stdout.write(json.dumps(d, ensure_ascii=False, indent=2) + "\n")
 fi
 
 TREE="$(git write-tree)"
+
+# output/·docs/ 프로젝트 폴더가 아닌데 PUBLISH 목록에도 없는 파일 = 빠뜨린 뼈대일 수 있다
+UNLISTED="$(git -c core.quotePath=false ls-tree -r --name-only HEAD \
+  | grep -vE '^(output/|docs/[^/]+/)' \
+  | grep -vxF -f <(git -c core.quotePath=false ls-files) || true)"
+if [ -n "$UNLISTED" ]; then
+  echo ""
+  echo "  참고: 공개 목록(PUBLISH)에 없어 빠지는 파일입니다. 뼈대라면 publish.sh에 추가하세요."
+  echo "$UNLISTED" | sed 's/^/    /'
+fi
 
 if [ "$DRY_RUN" = 1 ]; then
   echo ""
