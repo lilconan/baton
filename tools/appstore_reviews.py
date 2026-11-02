@@ -25,7 +25,13 @@ PROCESS.md §4 "P0 긁는 순서"의 실행 도구.
 
 ★ Google Play 는 공개 리뷰 피드가 없다 (§4 한계로 기록할 것).
 """
-import argparse, datetime, json, sys, time, urllib.parse, urllib.request
+import argparse
+import datetime
+import json
+import sys
+import time
+import urllib.parse
+import urllib.request
 
 UA = {"User-Agent": "Mozilla/5.0 (research; PROCESS.md §4)"}
 TODAY = datetime.date.today()
@@ -117,7 +123,7 @@ def render(app_id, country, pages, max_age_days, max_rating):
     out = [f"\n## {meta['name']}  ·  App Store {country.upper()}  ·  id={app_id}\n",
            f"- 수집 {len(rows)}건 (RSS 최대 {pages}페이지)",
            f"- 저평점 1~{max_rating}★ **{len(low)}건**  ·  그중 {max_age_days//365}년 이내 **{len(fresh)}건** (↓시점 강등 대상 {len(stale)}건)",
-           f"- 연도 분포: " + " · ".join(f"{y} {c}" for y, c in sorted(years.items()) if y),
+           "- 연도 분포: " + " · ".join(f"{y} {c}" for y, c in sorted(years.items()) if y),
            f"- 열람 {TODAY.isoformat()}\n",
            "| # | 인용 원문 | 별점 | 작성일 | 버전 | 등급 |",
            "|---|---|---|---|---|---|"]

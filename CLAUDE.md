@@ -91,8 +91,8 @@ STEP 0 참고.)
 STEP 0 산출물(`docs/{프로젝트명}/`), STEP 2(`interpretation.html`),
 STEP 4(`prototype.html`/`scenario-flow.html`), STEP 5 마감 보고 — 전부
 원본 기획안 대비 **무엇을 추가했는지(추론으로 채운 부분 포함), 무엇을 바꿨는지,
-왜 바꿨는지**를 표로 명시한다. 추가로 "이 부분은 이렇게 바꾸면 더 좋겠다"는
-제안도 별도 항목으로 남긴다. 형식 예:
+왜 바꿨는지**를 표로 명시한다. 추가로 원본을 더 낫게 할 제안도 별도 항목으로
+남긴다(산출물의 절 제목은 "덧붙이는 제안"처럼 짧게 쓴다. 이 설명 문구를 제목으로 옮기지 않는다). 형식 예:
 
 | 구분 | 원본 내용 | 결과물 내용 | 이유 |
 |---|---|---|---|
@@ -159,7 +159,8 @@ baton/
 ├── CONTEXT.md                   ← 프로젝트 컨텍스트
 ├── shell.html                   ← 온다 레퍼런스 구현체 (모노크롬 참고)
 ├── tools/
-│   └── appstore_reviews.py      ← P0 1차 VOC 수집기 (Apple 공개 리뷰 RSS)
+│   ├── appstore_reviews.py      ← P0 1차 VOC 수집기 (Apple 공개 리뷰 RSS)
+│   └── humanize_guard.py        ← 윤문 전후 인용·ID·링크·숫자 보호와 대조 (doc-humanize용)
 │
 ├── install.sh                   ← ~/.claude 로 에이전트·스킬 설치
 ├── publish.sh                   ← 공개 레포로 발행 (git subtree push)
@@ -172,7 +173,8 @@ baton/
 │   │   └── baton-builder.md        ← STEP 4 프로토타입 빌드
 │   └── skills/
 │       ├── baton-tokens.md         ← 모노크롬 팔레트 + 컴포넌트 정의
-│       └── baton-shell.md          ← PC캔버스·프레임·플로우뷰 보일러플레이트
+│       ├── baton-shell.md          ← PC캔버스·프레임·플로우뷰 보일러플레이트
+│       └── doc-humanize/           ← 지정한 문서 하나만 사람 글로 윤문 (humanize-korean 엔진 + 보호 장치)
 │
 ├── docs/
 │   ├── _TEMPLATE/               ← 새 프로젝트 시작용 14개 문서 세트 (복사해서 씀)

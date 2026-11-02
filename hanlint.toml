@@ -105,10 +105,31 @@ baseline = ".hanlint-baseline.json"
 # moreLaterMaxChars = 150
 # tableOddCellMinRows = 4
 
-# 사전에 더할 항목. 키는 cliches, translationese, redundantPair, japaneseLoan
+# 사전에 더할 항목. 키는 cliches, translationese, redundantPair, japaneseLoan, easyWords
 # [dictionary]
 # cliches = ["우리의 여정"]
 # translationese = [{ pattern = "에 대한 이해", fix = "를 아는 것" }]
+
+# 처음 읽는 사람이 막히는 비유 동사와 조어 (korean-copy-guardrail "읽히는 문장 6" 3·6번).
+# 2026-10-27 crack-과제 Q1 답변에서 사용자가 "영문을 1차원적으로 번역한 느낌"이라고 지적한 말들이다.
+# 문맥을 못 보는 사전이라 notice 로만 낸다. 판정은 doc-humanize 의 처음 읽는 사람 검사가 한다.
+[dictionary]
+translationese = [
+  { pattern = "받아 ?(내|낼|낸|냈|냅)", fix = "실제 행동(데려오다, 잡다, 얻다)으로 (비유 동사, catch 직역)" },
+  { pattern = "옮겨 ?(오|온|와|옵|올|왔)", fix = "무엇이 어디로 가는지 실제 행동으로 (비유 동사)" },
+  { pattern = "붙잡(지|을|는|고|아|습)", fix = "남게 하다, 계속 쓰게 하다 (hold 직역)" },
+  { pattern = "머물게 하", fix = "계속 쓰게 하다 (비유 동사)" },
+  { pattern = "날카로워", fix = "분명해지다, 구체적이 되다 (sharpen 직역)" },
+]
+easyWords = [
+  { pattern = "쥔 이야기", fix = "독자가 직접 이끄는 이야기", why = "비유라 뜻이 바로 안 잡힌다" },
+  { pattern = "판에서 싸우", fix = "같은 조건으로 경쟁하다", why = "비유다" },
+  { pattern = "정사\\(正史\\)|이야기의 정사", fix = "확정된 설정", why = "글쓴이가 만든 말이다. 처음 읽는 사람은 모른다" },
+  { pattern = "차별 지점", fix = "경쟁사와 다른 점", why = "글쓴이가 만든 말이다" },
+  { pattern = "기본 위생", fix = "기본으로 갖출 것", why = "글쓴이가 만든 말이다" },
+  { pattern = "(?<![가-힣])기본기", fix = "기본 품질(구체적으로 무엇인지)", why = "무엇을 가리키는지 바로 안 잡힌다" },
+  { pattern = "더 좋겠다는 제안", fix = "덧붙이는 제안", why = "지시서 설명 문구가 그대로 제목이 된 것이다" },
+]
 
 # 표면 치환이 바꾸면 안 되는 한국어 고유명사와 프로젝트 용어. 수치와 라틴 식별자는 자동으로 보호한다
 # protectedTerms = ["한린트", "김민지"]
