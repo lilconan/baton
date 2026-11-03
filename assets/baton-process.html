@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baton 풀프로세스 순서도</title>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --paper: #ffffff; --ink: #1a1a1a; --muted: #555555; --line: #d8d8d8; --font-sans: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
+    html, body { height: 100%; }
+    body { font-family: var(--font-sans); background: var(--paper); color: var(--ink); }
+    /* 16:9 화면 한 장: 위에 메뉴, 아래에 1280×720 그림을 화면 높이에 맞춰 넣는다 */
+    .frame { height: 100vh; display: flex; flex-direction: column; padding: 12px 16px; gap: 8px; }
+    header { text-align: center; }
+    h1 { font-size: 20px; font-weight: 700; }
+    .intro { font-size: 14px; color: var(--muted); margin-top: 2px; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+    .group { font-size: 12px; font-weight: 600; color: var(--muted); padding: 0 4px; }
+    .sep { width: 1px; height: 24px; background: var(--line); margin: 0 8px; }
+    .guide { font-size: 14px; color: var(--ink); text-align: center; max-width: 960px; line-height: 1.5; }
+    .tab { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid var(--line); border-radius: 22px; color: var(--muted); background: var(--paper); font-size: 14px; font-weight: 500; text-decoration: none; }
+    .frame:has(#all-simple:target) .tab[href="#all-simple"], .frame:not(:has(.view:target)) .tab[href="#all-simple"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .frame:has(#overview-simple:target) .tab[href="#overview-simple"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .frame:has(#step0-simple:target) .tab[href="#step0-simple"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .frame:has(#all:target) .tab[href="#all"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .frame:has(#overview:target) .tab[href="#overview"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .frame:has(#step0:target) .tab[href="#step0"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .view { display: none; flex: 1; min-height: 0; }
+    .view:target, .frame:not(:has(.view:target)) .view:first-of-type { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .view svg { width: 100%; flex: 1; min-height: 0; max-width: 1280px; aspect-ratio: 16 / 9; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header>
+      <h1>baton 풀프로세스</h1>
+      <p class="intro">기획서 한 장을 받아, 단계마다 사람의 확인을 거쳐 클릭되는 화면 시안까지 만드는 과정입니다.</p>
+    </header>
+    <nav aria-label="순서도 고르기">
+      <span class="group">처음이라면</span>
+      <a class="tab" href="#all-simple">전체 통합 심플</a>
+      <a class="tab" href="#overview-simple">전체 흐름 심플</a>
+      <a class="tab" href="#step0-simple">STEP 0 상세 심플</a>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="group">자세히</span>
+      <a class="tab" href="#all">전체 통합</a>
+      <a class="tab" href="#overview">전체 흐름</a>
+      <a class="tab" href="#step0">STEP 0 상세</a>
+    </nav>
+    <section id="all-simple" class="view" aria-label="풀프로세스 — 전체 통합 심플">
+      <p class="guide">왼쪽 열은 기획을 검증하는 STEP 0, 가운데 열은 화면을 만드는 STEP 2~4입니다. 마름모는 사람이 답하는 질문이고, ‘아니요’면 화살표를 따라 그 단계를 다시 합니다.</p>
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="all-simple-title all-simple-desc">
+        <title id="all-simple-title">Baton 풀프로세스 — 전체 통합 심플</title>
+        <desc id="all-simple-desc">기획 입력을 고정할 것과 검증할 것으로 나눈 뒤 문제 찾기, 문제 정의, 해법과 화면 목록을 확인 A, B, C를 거쳐 정해 기획 문서 14개를 남긴다. 이어 STEP 2 해석, STEP 3 화면 3안, STEP 4 시안 제작마다 사람이 확인하고, 고칠 것이 있으면 STEP 4로 돌아가며, 없으면 마감한다.</desc>
+        <defs><marker id="all-simple-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555555"/></marker></defs>
+        <rect width="100%" height="100%" fill="#ffffff"/>
+        <rect x="40" y="40" width="240" height="616" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="56" y="644" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">STEP 0 기획 검증</text>
+        <path d="M160 108 V154" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M160 212 V250" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M160 308 V346" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M160 404 V442" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M160 500 V544" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M248 576 L392 576 A8 8 0 0 0 400 568 L400 80 A8 8 0 0 1 408 72 L542 72" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M640 108 V142" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M640 224 V258" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M640 316 V350" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M640 432 V466" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M560 184 L528 184 A8 8 0 0 1 520 176 L520 96 A8 8 0 0 1 528 88 L542 88" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M560 392 L528 392 A8 8 0 0 1 520 384 L520 296 A8 8 0 0 1 528 288 L542 288" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M736 80 H822" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#all-simple-arrow)"/>
+        <path d="M736 288 H822" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#all-simple-arrow)"/>
+        <path d="M640 524 V578" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#all-simple-arrow)"/>
+        <path d="M736 496 H822" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M984 496 H1050" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <path d="M904 456 L904 448 A8 8 0 0 0 896 440 L712 440 A8 8 0 0 0 704 448 L704 466" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-simple-arrow)"/>
+        <rect x="644" y="236" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="648" y="248" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">네</text>
+        <rect x="644" y="444" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="648" y="456" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">선택</text>
+        <rect x="472" y="128" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="512" y="140" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="end">아니요</text>
+        <rect x="452" y="332" width="64" height="16" rx="2" fill="#ffffff"/>
+        <text x="512" y="344" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="end">다시 제안</text>
+        <rect x="994" y="474" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="1016" y="486" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아니요</text>
+        <rect x="756" y="418" width="96" height="16" rx="2" fill="#ffffff"/>
+        <text x="804" y="430" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네 · 다시 고침</text>
+        <rect x="72" y="52" width="176" height="56" rx="20" fill="#ffffff" stroke="none"/>
+        <rect x="72" y="52" width="176" height="56" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="160" y="86" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 입력</text>
+        <rect x="72" y="156" width="176" height="56" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="72" y="156" width="176" height="56" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="160" y="182" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">입력 나누기</text>
+        <text x="160" y="200" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">고정할 것 · 검증할 것</text>
+        <rect x="72" y="252" width="176" height="56" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="72" y="252" width="176" height="56" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="160" y="278" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 찾기</text>
+        <text x="160" y="296" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">리서치 · 확인 A</text>
+        <rect x="72" y="348" width="176" height="56" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="72" y="348" width="176" height="56" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="160" y="374" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 정의</text>
+        <text x="160" y="392" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 B</text>
+        <rect x="72" y="444" width="176" height="56" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="72" y="444" width="176" height="56" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="160" y="470" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해법 · 화면 목록</text>
+        <text x="160" y="488" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 C</text>
+        <path d="M72 548 H248 V596 C204 580 116 612 72 596 Z" fill="#ffffff" stroke="none"/>
+        <path d="M72 548 H248 V596 C204 580 116 612 72 596 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="160" y="578" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 문서 14개</text>
+        <rect x="544" y="52" width="192" height="56" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="544" y="52" width="192" height="56" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="78" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 2 기획 해석</text>
+        <text x="640" y="96" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획서를 화면 언어로</text>
+        <line x1="556" y1="52" x2="556" y2="108" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="724" y1="52" x2="724" y2="108" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="640,144 720,184 640,224 560,184" fill="#ffffff" stroke="none"/>
+        <polygon points="640,144 720,184 640,224 560,184" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="190" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해석 맞나요?</text>
+        <rect x="544" y="260" width="192" height="56" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="544" y="260" width="192" height="56" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="286" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 3 화면 3안</text>
+        <text x="640" y="304" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">구조가 다른 세 안</text>
+        <line x1="556" y1="260" x2="556" y2="316" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="724" y1="260" x2="724" y2="316" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="640,352 720,392 640,432 560,392" fill="#ffffff" stroke="none"/>
+        <polygon points="640,352 720,392 640,432 560,392" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="398" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">어느 안으로?</text>
+        <rect x="544" y="468" width="192" height="56" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="544" y="468" width="192" height="56" rx="4" fill="#ebebeb" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="640" y="494" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 4 시안 제작</text>
+        <text x="640" y="512" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">A·B·C 탭 프로토타입</text>
+        <line x1="556" y1="468" x2="556" y2="524" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="724" y1="468" x2="724" y2="524" stroke="#1a1a1a" stroke-width="2"/>
+        <path d="M824 52 H984 V100 C944 84 864 116 824 100 Z" fill="#ffffff" stroke="none"/>
+        <path d="M824 52 H984 V100 C944 84 864 116 824 100 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="904" y="82" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해석 리포트</text>
+        <path d="M824 260 H984 V308 C944 292 864 324 824 308 Z" fill="#ffffff" stroke="none"/>
+        <path d="M824 260 H984 V308 C944 292 864 324 824 308 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="904" y="290" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">화면 3안 비교</text>
+        <path d="M552 580 H728 V620 C684 604 596 636 552 620 Z" fill="#ffffff" stroke="none"/>
+        <path d="M552 580 H728 V620 C684 604 596 636 552 620 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="606" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">클릭되는 시안</text>
+        <polygon points="904,456 984,496 904,536 824,496" fill="#ffffff" stroke="none"/>
+        <polygon points="904,456 984,496 904,536 824,496" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="904" y="502" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 고칠까요?</text>
+        <rect x="1052" y="468" width="136" height="56" rx="20" fill="#ffffff" stroke="none"/>
+        <rect x="1052" y="468" width="136" height="56" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1120" y="494" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">마감</text>
+        <text x="1120" y="512" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">변경 내역 정리</text>
+        <line x1="32" y1="668" x2="1248" y2="668" stroke="#ebebeb" stroke-width="1"/>
+        <text x="32" y="700" fill="#555555" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+        <rect x="104" y="688" width="32" height="16" rx="8" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="144" y="700" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">시작·끝</text>
+        <rect x="215" y="688" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="255" y="700" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton이 하는 일</text>
+        <rect x="381" y="688" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/><line x1="387" y1="688" x2="387" y2="704" stroke="#1a1a1a"/><line x1="407" y1="688" x2="407" y2="704" stroke="#1a1a1a"/>
+        <text x="421" y="700" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton 단계</text>
+        <polygon points="532,684 548,696 532,708 516,696" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="556" y="700" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람이 답하는 질문</text>
+        <path d="M694 688 H726 V700 C718 696 702 708 694 700 Z" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="734" y="700" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">결과물</text>
+        <rect x="798" y="688" width="32" height="16" rx="2" fill="#ebebeb" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="838" y="700" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">핵심 단계</text>
+      </svg>
+    </section>
+    <section id="overview-simple" class="view" aria-label="풀프로세스 — 심플">
+      <p class="guide">기획서를 넣으면 마감까지 어떤 순서로 가는지 보여 줍니다. 마름모는 사람이 답하는 질문이고, STEP 1은 요청할 때만 해서 이 그림에서는 뺐습니다.</p>
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="overview-simple-title overview-simple-desc">
+        <title id="overview-simple-title">Baton 풀프로세스 — 심플</title>
+        <desc id="overview-simple-desc">기획 입력에서 STEP 0 기획 검증을 거쳐 STEP 2 해석, STEP 3 화면 3안, STEP 4 시안 제작을 지나 마감까지 두 줄로 이어지며, 각 단계 뒤 사람이 답하는 질문에서 다시 하겠다고 하면 그 단계로 돌아가고, 단계마다 남는 결과물을 함께 보여 준다.</desc>
+        <defs><marker id="overview-simple-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555555"/></marker></defs>
+        <rect width="100%" height="100%" fill="#ffffff"/>
+        <path d="M216 200 H302" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M528 200 H586" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M796 200 H862" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M1072 200 H1172 A8 8 0 0 1 1180 208 V320 A8 8 0 0 1 1172 328 H152 A8 8 0 0 0 144 336 V426" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M968 152 V120 A8 8 0 0 0 960 112 H700 A8 8 0 0 0 692 120 V166" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M248 460 H294" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M472 460 H526" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M752 460 H790" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M1016 460 H1078" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M384 412 V380 A8 8 0 0 0 376 372 H208 A8 8 0 0 0 200 380 V426" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M904 412 V380 A8 8 0 0 0 896 372 H648 A8 8 0 0 0 640 380 V426" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M416 232 V262" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M692 232 V262" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M144 492 V534" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#overview-simple-arrow)"/>
+        <path d="M640 492 V534" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#overview-simple-arrow)"/>
+        <rect x="1184" y="256" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="1188" y="268" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">네</text>
+        <rect x="814" y="90" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="830" y="102" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">다시</text>
+        <rect x="484" y="438" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="500" y="450" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">선택</text>
+        <rect x="1026" y="438" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="1048" y="450" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아니요</text>
+        <rect x="260" y="350" width="64" height="16" rx="2" fill="#ffffff"/>
+        <text x="292" y="362" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">다시 제안</text>
+        <rect x="762" y="350" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="772" y="362" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <path d="M328 264 H504 V304 C460 288 372 320 328 304 Z" fill="#ffffff" stroke="none"/>
+        <path d="M328 264 H504 V304 C460 288 372 320 328 304 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="416" y="290" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 문서 14개</text>
+        <path d="M604 264 H780 V304 C736 288 648 320 604 304 Z" fill="#ffffff" stroke="none"/>
+        <path d="M604 264 H780 V304 C736 288 648 320 604 304 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="692" y="290" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해석 리포트</text>
+        <path d="M56 536 H232 V576 C188 560 100 592 56 576 Z" fill="#ffffff" stroke="none"/>
+        <path d="M56 536 H232 V576 C188 560 100 592 56 576 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="144" y="562" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">화면 3안 비교</text>
+        <path d="M552 536 H728 V576 C684 560 596 592 552 576 Z" fill="#ffffff" stroke="none"/>
+        <path d="M552 536 H728 V576 C684 560 596 592 552 576 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="562" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">클릭되는 시안</text>
+        <rect x="40" y="168" width="176" height="64" rx="20" fill="#ffffff" stroke="none"/>
+        <rect x="40" y="168" width="176" height="64" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="128" y="198" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 입력</text>
+        <text x="128" y="216" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아이디어 ~ 기획서</text>
+        <rect x="304" y="168" width="224" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="304" y="168" width="224" height="64" rx="4" fill="#ebebeb" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="416" y="198" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 0 기획 검증</text>
+        <text x="416" y="216" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 3번 · 건너뛸 수 없음</text>
+        <line x1="316" y1="168" x2="316" y2="232" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="516" y1="168" x2="516" y2="232" stroke="#1a1a1a" stroke-width="2"/>
+        <rect x="588" y="168" width="208" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="588" y="168" width="208" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="692" y="206" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 2 기획 해석</text>
+        <line x1="600" y1="168" x2="600" y2="232" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="784" y1="168" x2="784" y2="232" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="968,152 1072,200 968,248 864,200" fill="#ffffff" stroke="none"/>
+        <polygon points="968,152 1072,200 968,248 864,200" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="968" y="206" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해석 맞나요?</text>
+        <rect x="40" y="428" width="208" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="40" y="428" width="208" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="144" y="466" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 3 화면 3안</text>
+        <line x1="52" y1="428" x2="52" y2="492" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="236" y1="428" x2="236" y2="492" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="384,412 472,460 384,508 296,460" fill="#ffffff" stroke="none"/>
+        <polygon points="384,412 472,460 384,508 296,460" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="384" y="466" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">어느 안으로?</text>
+        <rect x="528" y="428" width="224" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="528" y="428" width="224" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="466" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 4 시안 제작</text>
+        <line x1="540" y1="428" x2="540" y2="492" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="740" y1="428" x2="740" y2="492" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="904,412 1016,460 904,508 792,460" fill="#ffffff" stroke="none"/>
+        <polygon points="904,412 1016,460 904,508 792,460" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="904" y="466" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 고칠까요?</text>
+        <rect x="1080" y="428" width="160" height="64" rx="20" fill="#ffffff" stroke="none"/>
+        <rect x="1080" y="428" width="160" height="64" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1160" y="458" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">마감</text>
+        <text x="1160" y="476" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 5</text>
+        <line x1="32" y1="636" x2="1248" y2="636" stroke="#ebebeb" stroke-width="1"/>
+        <text x="32" y="668" fill="#555555" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+        <rect x="104" y="656" width="32" height="16" rx="8" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="144" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">시작·끝</text>
+        <rect x="215" y="656" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/><line x1="221" y1="656" x2="221" y2="672" stroke="#1a1a1a"/><line x1="241" y1="656" x2="241" y2="672" stroke="#1a1a1a"/>
+        <text x="255" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton 단계</text>
+        <polygon points="366,652 382,664 366,676 350,664" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="390" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람이 답하는 질문</text>
+        <rect x="528" y="656" width="32" height="16" rx="2" fill="#ebebeb" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="568" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">건너뛸 수 없는 단계</text>
+        <path d="M713 656 H745 V668 C737 664 721 676 713 668 Z" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="753" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">단계가 남기는 결과물</text>
+      </svg>
+    </section>
+    <section id="step0-simple" class="view" aria-label="STEP 0 — 심플">
+      <p class="guide">가장 오래 걸리는 STEP 0 기획 검증의 안쪽입니다. 리서치로 문제를 찾고, 정의하고, 해법과 화면 목록을 정하며 그때마다 사람이 확인합니다.</p>
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="step0-simple-title step0-simple-desc">
+        <title id="step0-simple-title">Baton STEP 0 — 심플</title>
+        <desc id="step0-simple-desc">문서 틀을 준비하고 입력을 나눈 뒤 문제 찾기, 문제 정의, 해법과 화면 목록을 두 줄로 이어 가며 확인 A·B·C에서 사람의 답을 받고 기획 문서 14개를 남기는 STEP 0 기획 검증의 흐름을 보여 준다.</desc>
+        <defs><marker id="step0-simple-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555555"/></marker></defs>
+        <rect width="100%" height="100%" fill="#ffffff"/>
+        <path d="M232 200 H278" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M456 200 H510" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M672 200 H726" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M904 200 H950" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M592 152 V120 A8 8 0 0 0 584 112 H376 A8 8 0 0 0 368 120 V166" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M1032 152 V120 A8 8 0 0 0 1024 112 H824 A8 8 0 0 0 816 120 V166" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M1112 200 H1172 A8 8 0 0 1 1180 208 V320 A8 8 0 0 1 1172 328 H152 A8 8 0 0 0 144 336 V426" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M248 460 H310" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M472 460 H534" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M744 460 H806" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-simple-arrow)"/>
+        <path d="M392 508 V540 A8 8 0 0 1 384 548 H152 A8 8 0 0 1 144 540 V494" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#step0-simple-arrow)"/>
+        <rect x="690" y="178" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="700" y="190" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="454" y="90" width="52" height="16" rx="2" fill="#ffffff"/>
+        <text x="480" y="102" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 찾기</text>
+        <rect x="892" y="90" width="64" height="16" rx="2" fill="#ffffff"/>
+        <text x="924" y="102" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 다듬기</text>
+        <rect x="1184" y="256" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="1188" y="268" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">네</text>
+        <rect x="494" y="438" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="504" y="450" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="220" y="556" width="96" height="16" rx="2" fill="#ffffff"/>
+        <text x="268" y="568" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">거절 시 (미정)</text>
+        <polygon points="60,168 212,168 232,200 212,232 60,232 40,200" fill="#ffffff" stroke="none"/>
+        <polygon points="60,168 212,168 232,200 212,232 60,232 40,200" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="136" y="198" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 틀 준비</text>
+        <text x="136" y="216" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목표 한 줄 · 입력 나누기</text>
+        <rect x="280" y="168" width="176" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="280" y="168" width="176" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="368" y="198" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 찾기</text>
+        <text x="368" y="216" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">리서치 · 문서 4개</text>
+        <polygon points="592,152 672,200 592,248 512,200" fill="#ffffff" stroke="none"/>
+        <polygon points="592,152 672,200 592,248 512,200" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="592" y="198" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 맞나요?</text>
+        <text x="592" y="216" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 A</text>
+        <rect x="728" y="168" width="176" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="728" y="168" width="176" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="816" y="198" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 정의</text>
+        <text x="816" y="216" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 3개</text>
+        <polygon points="1032,152 1112,200 1032,248 952,200" fill="#ffffff" stroke="none"/>
+        <polygon points="1032,152 1112,200 1032,248 952,200" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1032" y="198" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">정의 맞나요?</text>
+        <text x="1032" y="216" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 B</text>
+        <rect x="40" y="428" width="208" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="40" y="428" width="208" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="144" y="458" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해법·화면 목록</text>
+        <text x="144" y="476" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 5개</text>
+        <polygon points="392,412 472,460 392,508 312,460" fill="#ffffff" stroke="none"/>
+        <polygon points="392,412 472,460 392,508 312,460" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="392" y="458" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목록 맞나요?</text>
+        <text x="392" y="476" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 C</text>
+        <path d="M536 428 H744 V484 C692 468 588 500 536 484 Z" fill="#ffffff" stroke="none"/>
+        <path d="M536 428 H744 V484 C692 468 588 500 536 484 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="640" y="454" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 문서 14개</text>
+        <text x="640" y="472" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">변경 내역 표 포함</text>
+        <rect x="808" y="428" width="176" height="64" rx="20" fill="#ffffff" stroke="none"/>
+        <rect x="808" y="428" width="176" height="64" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="896" y="466" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 1·2로</text>
+        <line x1="32" y1="636" x2="1248" y2="636" stroke="#ebebeb" stroke-width="1"/>
+        <text x="32" y="668" fill="#555555" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+        <polygon points="112,656 128,656 136,664 128,672 112,672 104,664" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="144" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">준비</text>
+        <rect x="196" y="656" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="236" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton이 하는 일</text>
+        <polygon points="378,652 394,664 378,676 362,664" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="402" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람이 답하는 질문</text>
+        <path d="M540 656 H572 V668 C564 664 548 676 540 668 Z" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="580" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">결과물</text>
+        <rect x="644" y="656" width="32" height="16" rx="8" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="684" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">끝</text>
+        <line x1="724" y1="664" x2="756" y2="664" stroke="#555555" stroke-dasharray="5,4"/>
+        <text x="764" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">아직 정해지지 않은 길</text>
+      </svg>
+    </section>
+    <section id="all" class="view" aria-label="풀프로세스 — 전체 통합">
+      <p class="guide">STEP 0 안쪽까지 모든 갈래를 한 장에 넣은 지도입니다. 처음이라면 왼쪽의 심플 그림부터 보는 편이 쉽습니다.</p>
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="all-title all-desc">
+        <title id="all-title">Baton 풀프로세스 — 전체 통합</title>
+        <desc id="all-desc">기획 입력에서 STEP 0 기획 검증의 준비, 문제 찾기와 정의, 해법과 화면 목록, 요청할 때만 하는 STEP 1을 거쳐 STEP 2 해석, STEP 3 화면 3안, STEP 4 시안 제작, STEP 5 마감까지 가는 전체 흐름을 세 줄로 이어 보여 주며, 사람이 답하는 질문마다 되돌아가는 길을 함께 그린다.</desc>
+        <defs><marker id="all-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555555"/></marker></defs>
+        <rect width="100%" height="100%" fill="#ffffff"/>
+        <rect x="16" y="8" width="368" height="208" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="32" y="28" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">시작</text>
+        <rect x="400" y="8" width="864" height="208" rx="8" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="416" y="28" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">STEP 0 기획 검증 · 준비 (건너뛸 수 없음)</text>
+        <rect x="16" y="240" width="1052" height="172" rx="8" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="32" y="400" fill="#1a1a1a" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">STEP 0 · 문제·해법</text>
+        <rect x="16" y="444" width="1248" height="168" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="32" y="600" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">화면 · STEP 2~5</text>
+        <path d="M176 160 H206" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M288 120 V90" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M368 160 H422" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M584 160 H622" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M784 160 H822" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M1000 160 H1054" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M1144 128 V104 A8 8 0 0 0 1136 96 H712 A8 8 0 0 0 704 104 V126" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M912 200 V224 A8 8 0 0 1 904 232 H112 A8 8 0 0 0 104 240 V270" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M176 304 H206" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M352 304 H382" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M528 304 H558" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M704 304 H734" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M880 304 H910" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M1056 304 H1086" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M280 344 V368 A8 8 0 0 1 272 376 H112 A8 8 0 0 1 104 368 V338" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M632 344 V368 A8 8 0 0 1 624 376 H464 A8 8 0 0 1 456 368 V338" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M984 344 V368 A8 8 0 0 1 976 376 H816 A8 8 0 0 1 808 368 V338" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#all-arrow)"/>
+        <path d="M1232 304 H1256 A8 8 0 0 1 1264 312 V420 A8 8 0 0 1 1256 428 H112 A8 8 0 0 0 104 436 V470" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M176 504 H210" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M356 504 H390" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M536 504 H570" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M716 504 H750" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M896 504 H930" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M1076 504 H1110" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M284 544 V568 A8 8 0 0 1 276 576 H112 A8 8 0 0 1 104 568 V538" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M644 544 V568 A8 8 0 0 1 636 576 H472 A8 8 0 0 1 464 568 V538" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <path d="M1004 544 V568 A8 8 0 0 1 996 576 H832 A8 8 0 0 1 824 568 V538" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#all-arrow)"/>
+        <rect x="292" y="100" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="296" y="112" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">아니요</text>
+        <rect x="386" y="138" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="396" y="150" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="1018" y="138" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="1028" y="150" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="876" y="74" width="96" height="16" rx="2" fill="#ffffff"/>
+        <text x="924" y="86" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">답을 받고 다시</text>
+        <rect x="916" y="206" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="920" y="218" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">아니요</text>
+        <rect x="358" y="282" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="368" y="294" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="710" y="282" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="720" y="294" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="1062" y="282" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="1072" y="294" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="166" y="384" width="52" height="16" rx="2" fill="#ffffff"/>
+        <text x="192" y="396" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 찾기</text>
+        <rect x="512" y="384" width="64" height="16" rx="2" fill="#ffffff"/>
+        <text x="544" y="396" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 다듬기</text>
+        <rect x="848" y="384" width="96" height="16" rx="2" fill="#ffffff"/>
+        <text x="896" y="396" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">거절 시 (미정)</text>
+        <rect x="364" y="482" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="374" y="494" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="718" y="482" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="734" y="494" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">선택</text>
+        <rect x="1072" y="482" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="1094" y="494" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아니요</text>
+        <rect x="178" y="584" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="194" y="596" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">다시</text>
+        <rect x="522" y="584" width="64" height="16" rx="2" fill="#ffffff"/>
+        <text x="554" y="596" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">다시 제안</text>
+        <rect x="904" y="584" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="914" y="596" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="32" y="128" width="144" height="64" rx="20" fill="#ffffff" stroke="none"/>
+        <rect x="32" y="128" width="144" height="64" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="104" y="158" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 입력</text>
+        <text x="104" y="176" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아이디어 ~ 기획서</text>
+        <polygon points="288,120 368,160 288,200 208,160" fill="#ffffff" stroke="none"/>
+        <polygon points="288,120 368,160 288,200 208,160" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="288" y="166" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획서 있나요?</text>
+        <rect x="208" y="24" width="160" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="208" y="24" width="160" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="288" y="54" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">빠른 스케치</text>
+        <text x="288" y="72" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">wireframe 스킬로</text>
+        <line x1="220" y1="24" x2="220" y2="88" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="356" y1="24" x2="356" y2="88" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="444,128 564,128 584,160 564,192 444,192 424,160" fill="#ffffff" stroke="none"/>
+        <polygon points="444,128 564,128 584,160 564,192 444,192 424,160" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="504" y="158" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 틀 준비</text>
+        <text x="504" y="176" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목표 한 줄 쓰기</text>
+        <rect x="624" y="128" width="160" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="624" y="128" width="160" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="704" y="158" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">입력 나누기</text>
+        <text x="704" y="176" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">고정할 것 / 검증할 것</text>
+        <polygon points="912,120 1000,160 912,200 824,160" fill="#ffffff" stroke="none"/>
+        <polygon points="912,120 1000,160 912,200 824,160" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="912" y="158" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">모순 있나요?</text>
+        <text x="912" y="176" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">고정 조건끼리</text>
+        <path d="M1076 128 H1212 Q1232 160 1212 192 H1076 L1056 160 Z" fill="#ffffff" stroke="none"/>
+        <path d="M1076 128 H1212 Q1232 160 1212 192 H1076 L1056 160 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1144" y="158" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">사람에게 질문</text>
+        <text x="1144" y="176" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">유일한 질문</text>
+        <rect x="32" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="32" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="104" y="302" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 찾기</text>
+        <text x="104" y="320" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">리서치 · 문서 4개</text>
+        <polygon points="280,264 352,304 280,344 208,304" fill="#ffffff" stroke="none"/>
+        <polygon points="280,264 352,304 280,344 208,304" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="280" y="302" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 맞나요?</text>
+        <text x="280" y="320" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 A</text>
+        <rect x="384" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="384" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="456" y="302" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 정의</text>
+        <text x="456" y="320" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 3개</text>
+        <polygon points="632,264 704,304 632,344 560,304" fill="#ffffff" stroke="none"/>
+        <polygon points="632,264 704,304 632,344 560,304" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="632" y="302" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">정의 맞나요?</text>
+        <text x="632" y="320" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 B</text>
+        <rect x="736" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="736" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="808" y="302" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해법·화면 목록</text>
+        <text x="808" y="320" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 5개</text>
+        <polygon points="984,264 1056,304 984,344 912,304" fill="#ffffff" stroke="none"/>
+        <polygon points="984,264 1056,304 984,344 912,304" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="984" y="302" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목록 맞나요?</text>
+        <text x="984" y="320" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 C</text>
+        <rect x="1088" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="1088" y="272" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="5,4"/>
+        <text x="1160" y="302" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 1 화면 틀</text>
+        <text x="1160" y="320" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">요청할 때만</text>
+        <rect x="32" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="32" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="104" y="502" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 2 해석</text>
+        <text x="104" y="520" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">결과: 해석 리포트</text>
+        <line x1="44" y1="472" x2="44" y2="536" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="164" y1="472" x2="164" y2="536" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="284,464 356,504 284,544 212,504" fill="#ffffff" stroke="none"/>
+        <polygon points="284,464 356,504 284,544 212,504" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="284" y="510" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해석 맞나요?</text>
+        <rect x="392" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="392" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="464" y="502" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 3 화면 3안</text>
+        <text x="464" y="520" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">결과: 3안 비교</text>
+        <line x1="404" y1="472" x2="404" y2="536" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="524" y1="472" x2="524" y2="536" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="644,464 716,504 644,544 572,504" fill="#ffffff" stroke="none"/>
+        <polygon points="644,464 716,504 644,544 572,504" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="644" y="510" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">어느 안으로?</text>
+        <rect x="752" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="752" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="824" y="502" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 4 시안 제작</text>
+        <text x="824" y="520" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">결과: 클릭되는 시안</text>
+        <line x1="764" y1="472" x2="764" y2="536" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="884" y1="472" x2="884" y2="536" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="1004,464 1076,504 1004,544 932,504" fill="#ffffff" stroke="none"/>
+        <polygon points="1004,464 1076,504 1004,544 932,504" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1004" y="510" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 고칠까요?</text>
+        <rect x="1112" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="1112" y="472" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1184" y="502" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 5 마감</text>
+        <text x="1184" y="520" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">변경 내역 정리</text>
+        <text x="32" y="640" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">STEP 2~4 중 기획을 다시 요청하면 STEP 0으로 돌아갑니다. 확인 B·C에서 근거가 결론과 어긋나면 문제 찾기로 되돌아갑니다.</text>
+        <line x1="32" y1="660" x2="1248" y2="660" stroke="#ebebeb" stroke-width="1"/>
+        <text x="32" y="692" fill="#555555" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+        <rect x="104" y="680" width="32" height="16" rx="8" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="144" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">시작</text>
+        <polygon points="204,680 220,680 228,688 220,696 204,696 196,688" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="236" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">준비</text>
+        <rect x="288" y="680" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="328" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton이 하는 일</text>
+        <rect x="454" y="680" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/><line x1="460" y1="680" x2="460" y2="696" stroke="#1a1a1a"/><line x1="480" y1="680" x2="480" y2="696" stroke="#1a1a1a"/>
+        <text x="494" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton 단계</text>
+        <polygon points="605,676 621,688 605,700 589,688" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="629" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람이 답하는 질문</text>
+        <path d="M775 680 H791 Q799 688 791 696 H775 L767 688 Z" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="807" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람에게 묻기</text>
+        <rect x="914" y="680" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a" stroke-dasharray="4,3"/>
+        <text x="954" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">요청할 때만</text>
+        <rect x="1049" y="680" width="32" height="16" rx="4" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="1089" y="692" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">STEP 0 (건너뛸 수 없음)</text>
+      </svg>
+    </section>
+    <section id="overview" class="view" aria-label="풀프로세스 — 전체 흐름">
+      <p class="guide">STEP 0을 한 덩어리로 접고, 요청할 때만 하는 STEP 1과 기획 다시 요청 같은 곁가지까지 보여 줍니다.</p>
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="overview-title overview-desc">
+        <title id="overview-title">Baton 풀프로세스 — 전체 흐름</title>
+        <desc id="overview-desc">기획 입력에서 STEP 0 기획 검증과 요청할 때만 하는 STEP 1을 거쳐 STEP 2 해석, STEP 3 화면 3안, STEP 4 시안 제작, STEP 5 마감까지 가는 흐름과, 단계마다 사람이 답하는 질문에서 되돌아가는 길을 두 구역으로 나눠 보여 준다.</desc>
+        <defs><marker id="overview-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555555"/></marker></defs>
+        <rect width="100%" height="100%" fill="#ffffff"/>
+        <rect x="16" y="56" width="1248" height="264" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="32" y="76" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">시작 · STEP 0~1</text>
+        <rect x="16" y="384" width="1248" height="216" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="32" y="588" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">화면 만들기 · STEP 2~5</text>
+        <path d="M176 136 H214" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M376 136 H430" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M608 136 H654" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M832 136 H900" fill="none" stroke="#555555" stroke-width="1"/>
+        <path d="M296 184 V238" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M520 248 V170" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#overview-arrow)"/>
+        <path d="M744 184 V238" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M832 272 H896 A8 8 0 0 0 904 264 V140" fill="none" stroke="#555555" stroke-width="1"/>
+        <path d="M908 136 H1232 A8 8 0 0 1 1240 144 V344 A8 8 0 0 1 1232 352 H112 A8 8 0 0 0 104 360 V414" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M176 448 H214" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M352 448 H390" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M536 448 H574" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M712 448 H750" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M896 448 H934" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M1072 448 H1110" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M284 496 V528 A8 8 0 0 1 276 536 H112 A8 8 0 0 1 104 528 V482" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M644 496 V528 A8 8 0 0 1 636 536 H472 A8 8 0 0 1 464 528 V482" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <path d="M1004 496 V528 A8 8 0 0 1 996 536 H832 A8 8 0 0 1 824 528 V482" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#overview-arrow)"/>
+        <rect x="394" y="114" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="404" y="126" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="844" y="114" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="866" y="126" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아니요</text>
+        <rect x="300" y="200" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="304" y="212" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">아니요</text>
+        <rect x="748" y="200" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="752" y="212" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">네</text>
+        <rect x="362" y="426" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="372" y="438" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="716" y="426" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="732" y="438" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">선택</text>
+        <rect x="1068" y="426" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="1090" y="438" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아니요</text>
+        <rect x="178" y="544" width="32" height="16" rx="2" fill="#ffffff"/>
+        <text x="194" y="556" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">다시</text>
+        <rect x="522" y="544" width="64" height="16" rx="2" fill="#ffffff"/>
+        <text x="554" y="556" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">다시 제안</text>
+        <rect x="904" y="544" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="914" y="556" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="32" y="104" width="144" height="64" rx="20" fill="#ffffff" stroke="none"/>
+        <rect x="32" y="104" width="144" height="64" rx="20" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="104" y="134" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 입력</text>
+        <text x="104" y="152" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">아이디어 ~ 기획서</text>
+        <polygon points="296,88 376,136 296,184 216,136" fill="#ffffff" stroke="none"/>
+        <polygon points="296,88 376,136 296,184 216,136" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="296" y="142" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획서 있나요?</text>
+        <rect x="432" y="104" width="176" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="432" y="104" width="176" height="64" rx="4" fill="#ebebeb" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="520" y="134" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 0 기획 검증</text>
+        <text x="520" y="152" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">건너뛸 수 없음</text>
+        <line x1="444" y1="104" x2="444" y2="168" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="596" y1="104" x2="596" y2="168" stroke="#1a1a1a" stroke-width="2"/>
+        <polygon points="744,88 832,136 744,184 656,136" fill="#ffffff" stroke="none"/>
+        <polygon points="744,88 832,136 744,184 656,136" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="744" y="134" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">화면 틀 먼저?</text>
+        <text x="744" y="152" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 1 요청</text>
+        <circle cx="904" cy="136" r="4" fill="#1a1a1a"/>
+        <rect x="208" y="240" width="176" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="208" y="240" width="176" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="296" y="270" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">빠른 스케치</text>
+        <text x="296" y="288" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">wireframe 스킬로</text>
+        <line x1="220" y1="240" x2="220" y2="304" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="372" y1="240" x2="372" y2="304" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="432,256 608,240 608,304 432,304" fill="#ffffff" stroke="none"/>
+        <polygon points="432,256 608,240 608,304 432,304" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="520" y="274" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 다시 요청</text>
+        <text x="520" y="292" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 2~4 중 언제든</text>
+        <rect x="656" y="240" width="176" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="656" y="240" width="176" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="744" y="270" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 1 화면 틀</text>
+        <text x="744" y="288" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">요청할 때만</text>
+        <rect x="32" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="32" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="104" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 2 해석</text>
+        <text x="104" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">결과: 해석 리포트</text>
+        <line x1="44" y1="416" x2="44" y2="480" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="164" y1="416" x2="164" y2="480" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="284,400 352,448 284,496 216,448" fill="#ffffff" stroke="none"/>
+        <polygon points="284,400 352,448 284,496 216,448" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="284" y="454" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해석 맞나요?</text>
+        <rect x="392" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="392" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="464" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 3 화면 3안</text>
+        <text x="464" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">결과: 3안 비교</text>
+        <line x1="404" y1="416" x2="404" y2="480" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="524" y1="416" x2="524" y2="480" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="644,400 712,448 644,496 576,448" fill="#ffffff" stroke="none"/>
+        <polygon points="644,400 712,448 644,496 576,448" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="644" y="454" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">어느 안으로?</text>
+        <rect x="752" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="752" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="824" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 4 시안 제작</text>
+        <text x="824" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">결과: 클릭되는 시안</text>
+        <line x1="764" y1="416" x2="764" y2="480" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="884" y1="416" x2="884" y2="480" stroke="#1a1a1a" stroke-width="1"/>
+        <polygon points="1004,400 1072,448 1004,496 936,448" fill="#ffffff" stroke="none"/>
+        <polygon points="1004,400 1072,448 1004,496 936,448" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1004" y="454" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 고칠까요?</text>
+        <rect x="1112" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="1112" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1184" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 5 마감</text>
+        <text x="1184" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">변경 내역 정리</text>
+        <line x1="32" y1="636" x2="1248" y2="636" stroke="#ebebeb" stroke-width="1"/>
+        <text x="32" y="668" fill="#555555" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+        <rect x="104" y="656" width="32" height="16" rx="8" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="144" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">시작</text>
+        <rect x="196" y="656" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="236" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton이 하는 일</text>
+        <rect x="362" y="656" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/><line x1="368" y1="656" x2="368" y2="672" stroke="#1a1a1a"/><line x1="388" y1="656" x2="388" y2="672" stroke="#1a1a1a"/>
+        <text x="402" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton 단계</text>
+        <polygon points="513,652 529,664 513,676 497,664" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="537" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람이 답하는 질문</text>
+        <polygon points="675,660 707,656 707,672 675,672" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="715" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람이 요청</text>
+        <circle cx="826" cy="664" r="4" fill="#1a1a1a"/>
+        <text x="850" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">합류</text>
+        <rect x="902" y="656" width="32" height="16" rx="2" fill="#ebebeb" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="942" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">건너뛸 수 없음</text>
+        <rect x="1056" y="656" width="32" height="16" rx="4" fill="none" stroke="#d8d8d8"/>
+        <text x="1096" y="668" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">구역</text>
+      </svg>
+    </section>
+    <section id="step0" class="view" aria-label="STEP 0 — 상세">
+      <p class="guide">STEP 0 기획 검증의 모든 갈래입니다. 바꾸면 안 되는 조건끼리 부딪힐 때만 사람에게 묻고, 나머지 빈칸은 리서치로 채웁니다.</p>
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="step0-title step0-desc">
+        <title id="step0-title">Baton 풀프로세스 — STEP 0 상세</title>
+        <desc id="step0-desc">STEP 0 기획 검증에서 문서 틀을 준비하고 입력을 나눠 고정 조건끼리 모순이 있는지 본 뒤, 1차 구역에서 문제를 찾고 정의하며 2차 구역에서 해법과 화면 목록을 정하고, 확인 A·B·C에서 사람의 답을 받는 흐름을 보여 준다.</desc>
+        <defs><marker id="step0-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555555"/></marker></defs>
+        <rect width="100%" height="100%" fill="#ffffff"/>
+        <rect x="16" y="40" width="1248" height="200" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="32" y="60" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">준비</text>
+        <rect x="16" y="384" width="696" height="216" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="32" y="588" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">1차 · 문제</text>
+        <rect x="728" y="384" width="536" height="216" rx="8" fill="none" stroke="#d8d8d8" stroke-width="1"/>
+        <text x="744" y="588" fill="#555555" font-size="12" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">2차 · 해법</text>
+        <path d="M192 152 H230" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M408 152 H446" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M624 152 H670" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M880 152 H942" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M1040 120 V92 A8 8 0 0 0 1032 84 H544 A8 8 0 0 0 536 92 V118" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M776 200 V312 A8 8 0 0 1 768 320 H112 A8 8 0 0 0 104 328 V414" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M176 448 H206" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M352 448 H382" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M528 448 H558" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M704 448 H750" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M896 448 H926" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M1072 448 H1102" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M280 496 V528 A8 8 0 0 1 272 536 H112 A8 8 0 0 1 104 528 V482" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M632 496 V528 A8 8 0 0 1 624 536 H464 A8 8 0 0 1 456 528 V482" fill="none" stroke="#555555" stroke-width="1" marker-end="url(#step0-arrow)"/>
+        <path d="M1000 496 V528 A8 8 0 0 1 992 536 H832 A8 8 0 0 1 824 528 V482" fill="none" stroke="#555555" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#step0-arrow)"/>
+        <rect x="902" y="130" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="912" y="142" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="740" y="62" width="96" height="16" rx="2" fill="#ffffff"/>
+        <text x="788" y="74" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">답을 받고 다시</text>
+        <rect x="780" y="260" width="44" height="16" rx="2" fill="#ffffff"/>
+        <text x="784" y="272" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="start">아니요</text>
+        <rect x="358" y="426" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="368" y="438" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="718" y="426" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="728" y="438" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="1078" y="426" width="20" height="16" rx="2" fill="#ffffff"/>
+        <text x="1088" y="438" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">네</text>
+        <rect x="166" y="544" width="52" height="16" rx="2" fill="#ffffff"/>
+        <text x="192" y="556" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 찾기</text>
+        <rect x="512" y="544" width="64" height="16" rx="2" fill="#ffffff"/>
+        <text x="544" y="556" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">더 다듬기</text>
+        <rect x="864" y="544" width="96" height="16" rx="2" fill="#ffffff"/>
+        <text x="912" y="556" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">거절 시 (미정)</text>
+        <polygon points="32,120 192,120 192,168 112,184 32,168" fill="#ffffff" stroke="none"/>
+        <polygon points="32,120 192,120 192,168 112,184 32,168" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="112" y="152" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">전체 흐름에서</text>
+        <polygon points="252,120 388,120 408,152 388,184 252,184 232,152" fill="#ffffff" stroke="none"/>
+        <polygon points="252,120 388,120 408,152 388,184 252,184 232,152" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="320" y="150" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 틀 준비</text>
+        <text x="320" y="168" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목표 한 줄 쓰기</text>
+        <rect x="448" y="120" width="176" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="448" y="120" width="176" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="536" y="150" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">입력 나누기</text>
+        <text x="536" y="168" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">고정할 것 / 검증할 것</text>
+        <polygon points="776,104 880,152 776,200 672,152" fill="#ffffff" stroke="none"/>
+        <polygon points="776,104 880,152 776,200 672,152" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="776" y="150" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">모순 있나요?</text>
+        <text x="776" y="168" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">고정 조건끼리</text>
+        <path d="M964 120 H1116 Q1136 152 1116 184 H964 L944 152 Z" fill="#ffffff" stroke="none"/>
+        <path d="M964 120 H1116 Q1136 152 1116 184 H964 L944 152 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1040" y="150" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">사람에게 질문</text>
+        <text x="1040" y="168" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">STEP 0의 유일한 질문</text>
+        <rect x="32" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="32" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="104" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 찾기</text>
+        <text x="104" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">리서치 · 문서 4개</text>
+        <polygon points="280,400 352,448 280,496 208,448" fill="#ffffff" stroke="none"/>
+        <polygon points="280,400 352,448 280,496 208,448" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="280" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 맞나요?</text>
+        <text x="280" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 A</text>
+        <rect x="384" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="384" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="456" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문제 정의</text>
+        <text x="456" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 3개</text>
+        <polygon points="632,400 704,448 632,496 560,448" fill="#ffffff" stroke="none"/>
+        <polygon points="632,400 704,448 632,496 560,448" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="632" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">정의 맞나요?</text>
+        <text x="632" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 B</text>
+        <rect x="752" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="none"/>
+        <rect x="752" y="416" width="144" height="64" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="824" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">해법·화면 목록</text>
+        <text x="824" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">문서 5개</text>
+        <polygon points="1000,400 1072,448 1000,496 928,448" fill="#ffffff" stroke="none"/>
+        <polygon points="1000,400 1072,448 1000,496 928,448" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1000" y="446" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">목록 맞나요?</text>
+        <text x="1000" y="464" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">확인 C</text>
+        <polygon points="1104,416 1248,416 1248,464 1176,480 1104,464" fill="#ffffff" stroke="none"/>
+        <polygon points="1104,416 1248,416 1248,464 1176,480 1104,464" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"/>
+        <text x="1176" y="440" fill="#1a1a1a" font-size="16" font-weight="600" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">전체 흐름으로</text>
+        <text x="1176" y="458" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">기획 문서 14개</text>
+        <text x="32" y="624" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">확인 B·C 단계에서 리서치 근거가 결론과 어긋나면 문제 찾기로 되돌아갑니다.</text>
+        <line x1="32" y1="644" x2="1248" y2="644" stroke="#ebebeb" stroke-width="1"/>
+        <text x="32" y="676" fill="#555555" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+        <polygon points="108,660 132,660 132,672 120,684 108,672" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="144" y="676" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">다른 그림으로 이어짐</text>
+        <polygon points="302,664 318,664 326,672 318,680 302,680 294,672" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="334" y="676" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">준비</text>
+        <rect x="386" y="664" width="32" height="16" rx="2" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="426" y="676" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">baton이 하는 일</text>
+        <polygon points="568,660 584,672 568,684 552,672" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="592" y="676" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람이 답하는 질문</text>
+        <path d="M738 664 H754 Q762 672 754 680 H738 L730 672 Z" fill="#ffffff" stroke="#1a1a1a"/>
+        <text x="770" y="676" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">사람에게 묻기</text>
+        <rect x="877" y="664" width="32" height="16" rx="4" fill="none" stroke="#d8d8d8"/>
+        <text x="917" y="676" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">구역</text>
+        <line x1="969" y1="672" x2="1001" y2="672" stroke="#555555" stroke-dasharray="5,4"/>
+        <text x="1009" y="676" fill="#555555" font-size="12" font-weight="500" font-family="'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">아직 정해지지 않은 길</text>
+      </svg>
+    </section>
+  </div>
+</body>
+</html>

@@ -40,7 +40,19 @@ curl -fsSL $BASE/PROCESS.md -o PROCESS.md
 
 ## 워크플로우
 
-![Baton 워크플로우: 기획 입력 → STEP 0 입력 게이트 → STEP 2 기획 해석 → STEP 3 A/B/C 3안 설계 → STEP 4 프로토타입 빌드 → 마감](assets/baton-workflow.svg)
+```
+기획 입력
+  ↓
+STEP 0  입력 게이트 (기획 문서 14개 · 확인 A·B·C)   ★생략 금지
+  ↓
+STEP 2  기획 해석      interpretation.html     → 확인 (다시 / OK)
+  ↓
+STEP 3  화면 구조 3안  screens-proposal.html   → 안 선택 (수정 / A·B·C·전부)
+  ↓
+STEP 4  프로토타입     prototype.html · scenario-flow.html → 수정 반복
+  ↓
+STEP 5  마감
+```
 
 STEP 0은 입력을 FIXED/OPEN으로 나누고, 필수 기능마다 근거가 있는지 추적합니다. STEP 4는 `prototype.html`(A/B/C 탭 통합 프로토타입)과 `scenario-flow.html`(시나리오 기반 플로우 문서)을 함께 만듭니다.
 
@@ -48,31 +60,20 @@ STEP 0은 입력을 FIXED/OPEN으로 나누고, 필수 기능마다 근거가 �
 검증되지 않은 결론이 많다는 뜻이므로, 와이어프레임을 그리기 전에 먼저
 `docs/{프로젝트}/`에 기획 문서를 남깁니다. → `PROCESS.md` §2, R9
 
-### 순서도로 보면
+### 순서도
 
-각 단계 뒤에서 사용자 확인을 기다리고, 다시 하거나 수정하면 그 단계로 돌아갑니다.
+분기와 되돌아가는 길까지 표준 순서도 기호로 그린 그림은 [`assets/baton-process.html`](assets/baton-process.html) 한 파일에 있습니다. 레포를 받은 뒤 브라우저로 열면 위쪽 메뉴에서 여섯 가지 그림을 골라 볼 수 있습니다. 처음이라면 "처음이라면" 묶음의 그림부터 보는 편이 쉽습니다.
 
-![Baton 풀프로세스 심플 순서도: 기획 입력 → STEP 0 → STEP 2 → 해석 확인 → STEP 3 → 안 선택 → STEP 4 → 수정 확인 → 마감](assets/baton-process-simple.svg)
+| 묶음 | 메뉴 | 내용 |
+|---|---|---|
+| 처음이라면 | 전체 통합 심플 | STEP 0과 STEP 2~4를 열 두 개로 나란히 놓고 사람의 확인 질문, 되돌아가는 길, 단계별 결과물을 담은 한 장 |
+| 처음이라면 | 전체 흐름 심플 | 단계와 사람의 확인만 남긴 한 장 |
+| 처음이라면 | STEP 0 상세 심플 | 문제 찾기 → 문제 정의 → 해법·화면 목록과 확인 A·B·C만 남긴 한 장 |
+| 자세히 | 전체 통합 | STEP 0 안쪽부터 마감까지 모든 갈래를 세 줄로 이은 지도 |
+| 자세히 | 전체 흐름 | STEP 0~5, STEP 1 선택 갈래, 기획 다시 요청, 단계별 산출물 |
+| 자세히 | STEP 0 상세 | 고정 조건 모순 확인, 확인 A·B·C, 근거와 어긋날 때 되돌아가는 길 |
 
-STEP 1, 문서 재작업 요청, 산출물, STEP 0 안의 확인 A·B·C까지 모두 보려면 아래 상세 순서도를 펼치세요
-
-### 분기까지 담은 순서도
-
-사용자 확인에서 되돌아가는 길, 선택 단계, 산출물까지 모두 표준 순서도 기호로 그렸습니다. 그림을 누르면 원래 크기로 열립니다.
-
-<details>
-<summary>1쪽: 전체 흐름 (STEP 0~5)</summary>
-
-[![Baton 풀프로세스 전체 흐름 순서도](assets/baton-process-1.svg)](assets/baton-process-1.svg)
-
-</details>
-
-<details>
-<summary>2쪽: STEP 0 상세 (확인 A·B·C)</summary>
-
-[![Baton STEP 0 상세 순서도](assets/baton-process-2.svg)](assets/baton-process-2.svg)
-
-</details>
+그림은 `python3 assets/baton_process_gen.py`로 다시 만듭니다.
 
 ---
 
